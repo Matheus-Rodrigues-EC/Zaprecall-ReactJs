@@ -1,6 +1,6 @@
 // import Welcome from "./Components/Welcome";
-import Screen from "./Components/Screen";
-import Questions from "./Components/Questions";
+import Screen from "./Screen";
+import Questions from "./Questions";
 import { useState } from 'react';
 
 function App() {

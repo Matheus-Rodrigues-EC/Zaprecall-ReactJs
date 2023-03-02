@@ -71,7 +71,8 @@ const BottonBar = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10px auto;
+    margin: 10px auto 0 auto;
+    padding-bottom: 10px;
     box-sizing: border-box;
 
     position: fixed;

@@ -6,6 +6,7 @@ import Turn from "./assets/seta_virar.png";
 import OK from "./assets/icone_certo.png";
 import Almost from "./assets/icone_quase.png";
 import Wrong from "./assets/icone_erro.png";
+import { useState } from 'react';
 
 const StateAnswer = [  
                     Play,
@@ -17,7 +18,12 @@ const StateAnswer = [
 
 export default function Questions(props){
     const {turn, setTurn, verify, setVerify, sequence, setSequence, respostas, setRespostas} = props;
-    // console.log(turn)
+
+    const [forgots, setForgots] = useState([]);
+    const [almosts, setAlmosts] = useState([]);
+    const [remembers, setRemembers] = useState([]);
+
+    // console.log(situation)
     function TurnCard(index){
         const virados = [...turn];
         setTurn([...virados, index]);
@@ -32,7 +38,7 @@ export default function Questions(props){
 
     function SetOrder(image){
         const cont = respostas + 1;
-        if(cont < 9) {
+        if(cont <= Cards.length) {
             const images = [...sequence];
             setSequence([...images, image])
         }
@@ -40,27 +46,79 @@ export default function Questions(props){
 
     function AddResponse(){
         const cont = respostas + 1;
-        if(cont < 9) setRespostas(cont);
+        if(cont <= Cards.length) setRespostas(cont);
     }
-    // console.log(turn);
+
+    function AddForgots(str){
+        const listF = [...forgots];
+        if(!listF.includes(str)) {
+            setForgots([...listF, str])
+            SetOrder(Wrong);
+            AddResponse(); 
+        }
+    }
+    console.log(forgots);
+
+    function AddAlmost(str){
+        const listA = [...almosts];
+        if(!listA.includes(str)) {
+            setAlmosts([...listA, str])
+            SetOrder(Almost);
+            AddResponse(); 
+        }
+    }
+    console.log(almosts);
+
+    function AddRemember(str){
+        const listR = [...remembers];
+        if(!listR.includes(str)) {
+            setRemembers([...listR, str]);
+            SetOrder(OK);
+            AddResponse(); 
+        }
+    }
+    console.log(remembers);
 
     return(
         <Main>
             <Lista>
                 {Cards.map((card, index) => 
-                <Item   key={card.question} 
-                        
-                >
-                    {turn.includes(card.question) ? 
-                        verify.includes(card.answer) ? 
-                        <Answer>
-                            {card.answer} 
-                            <Buttons>
-                                <ForgotBtn onClick={() => {SetOrder(Wrong); AddResponse();}} >Não Lembrei</ForgotBtn>
-                                <AlmostBtn onClick={() => {SetOrder(Almost); AddResponse();}} >Quase não Lembrei</AlmostBtn>
-                                <RememberBtn onClick={() => {SetOrder(OK); AddResponse();}} >Zap!</RememberBtn>
-                            </Buttons>
-                        </Answer>
+                <Item   key={card.question} >
+                        {
+                        turn.includes(card.question) ? 
+                            verify.includes(card.answer) ? 
+                                forgots.includes(card.answer) ? 
+                                    almosts.includes(card.answer) ? 
+                                        remembers.includes(card.answer) ? 
+                                            <RememberAnswer>
+                                                {"Pergunta " + (index+1)}
+                                                <Icon src={StateAnswer[2]}/>
+                                            </RememberAnswer>
+                                        : 
+                                        <AlmostAnswer>
+                                            {"Pergunta " + (index+1)}
+                                            <Icon src={StateAnswer[3]}/>
+                                        </AlmostAnswer>
+                                    :
+                                    <ForgotAnswer>
+                                        {"Pergunta " + (index+1)}
+                                        <Icon src={StateAnswer[4]}/>
+                                    </ForgotAnswer>
+                                :
+                                <Answer>
+                                    {card.answer} 
+                                    <Buttons>
+                                        <ForgotBtn onClick={() => {
+                                            AddForgots(card.answer);
+                                            }} >Não Lembrei</ForgotBtn>
+                                        <AlmostBtn onClick={() => {
+                                            AddAlmost(card.answer);
+                                            }} >Quase não Lembrei</AlmostBtn>
+                                        <RememberBtn onClick={() => {
+                                            AddRemember(card.answer);
+                                            }} >Zap!</RememberBtn>
+                                    </Buttons>
+                                </Answer>
                             : 
                             <QuestTurn>
                             {card.question}
@@ -70,15 +128,16 @@ export default function Questions(props){
                                         TurnCard(card.question);
                                     }} />
                             </QuestTurn>
-                            : 
-                            <Quest>
-                                {"Pergunta " + (index+1)}
-                                <Icon   src={StateAnswer[0]} 
-                                        onClick={() => {
-                                            ShowAnswer(card);
-                                            TurnCard(card.question);
-                                        }} />
-                            </Quest>
+                        : 
+                        <Quest>
+                            {"Pergunta " + (index+1)}
+                            <Icon   src={StateAnswer[0]} 
+                                    onClick={() => {
+                                        ShowAnswer(card);
+                                        TurnCard(card.question);
+                                    }} />
+                        </Quest>
+                                    
                     }
                 </Item>
                 )}
@@ -125,6 +184,7 @@ const Item = styled.li`
 const Quest = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding: 15px;
     background-color: #FFFFFF;
@@ -135,16 +195,23 @@ const QuestTurn = styled(Quest)`
     background-color: #FFFFD4;
 `
 
-const Answer = styled.div`
-    display: flex;
+const Answer = styled(Quest)`
     flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    padding: 15px;
     background-color: #FFFFD4;
-    border-radius: 5px;
 `
-
+const Answered = styled(Quest)`
+    background-color: #FFFFFF;
+    text-decoration: line-through;
+`
+const ForgotAnswer = styled(Answered)`
+    color: #FF3030;
+`
+const AlmostAnswer = styled(Answered)`
+    color: #FF922E;
+`
+const RememberAnswer = styled(Answered)`
+    color: #2FBE34;
+`
 
 export const Icon = styled.img`
     display: flex;
@@ -175,3 +242,4 @@ const AlmostBtn = styled(Button)`
 const RememberBtn = styled(Button)`
     background-color: #2FBE34;
 `
+

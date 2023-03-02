@@ -1,0 +1,22 @@
+.Answer{
+    background-color: #FFFFFF;
+    text-decoration: line-through;
+}
+
+.ForgotAnswer{
+    background-color: #FFFFFF;
+    text-decoration: line-through;
+    color: #FF3030;
+}
+
+.AlmostAnswer {
+    background-color: #FFFFFF;
+    text-decoration: line-through;
+    color: #FF922E;
+}
+
+.RememberAnswer{
+    background-color: #FFFFFF;
+    text-decoration: line-through;    
+    color: #2FBE34;
+}
