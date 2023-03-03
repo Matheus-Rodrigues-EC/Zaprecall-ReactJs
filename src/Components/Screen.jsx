@@ -4,10 +4,21 @@ import Questions from "./Questions";
 import { Cards } from "./Cards";
 import { Icon } from "./Questions";
 import { useState } from 'react';
+import OK from "./assets/icone_certo.png";
+import Almost from "./assets/icone_quase.png";
+import Wrong from "./assets/icone_erro.png";
+import Party from "./assets/party.png";
+import Sad from "./assets/sad.png";
 
 export default function Screen(props){
     const {turn, setTurn, verify, setVerify, sequence, setSequence} = props
     const [respostas, setRespostas] = useState(0);
+    const [show, setShow] = useState('none');
+
+    function verifyFinish(){
+        if((sequence.length + 1) === Cards.length) setShow('flex')
+        console.log(show);
+    }
 
     return(
         <Section>
@@ -23,12 +34,41 @@ export default function Screen(props){
                         setSequence={setSequence}
                         respostas={respostas}
                         setRespostas={setRespostas}
+                        verifyFinish={verifyFinish}
                         />
-            <BottonBar>
+            <BottonBar data-test="footer">
+                <Finish show={show}>
+                    {sequence.includes(Wrong) ? (
+                        <>
+                        <Title>
+                            <Icon src={Sad}/>
+                            <h1>Putz...</h1>
+                        </Title>
+                        <Message>Ainda faltam alguns... Mas não desanime!</Message>
+                        </>
+                        
+                    ) : (
+                        <>
+                        <Title>
+                            <Icon src={Party}/>
+                            <h1>Parabéns!</h1>
+                        </Title>
+                        <Message>Você não esqueceu de nenhum flashcard!</Message>
+                        </>
+                    )
+                }
+                </Finish>
                 <h4>{respostas}/{Cards.length} Concluídos</h4>
                 <Order>
                     {sequence.map((image, index) => 
-                        <Icon key={index} src={image} />
+                        sequence.includes(OK) ? (
+                            <Icon key={index} src={image} data-test="zap-icon"  />
+                        ) : sequence.includes(Almost) ? (
+                            <Icon key={index} src={image} data-test="partial-icon" />
+                        ) : sequence.includes(Wrong) ? (
+                            <Icon key={index} src={image} data-test="no-icon" />
+                        ) : null
+                        
                     )}
                 </Order>
             </BottonBar>
@@ -71,8 +111,9 @@ const BottonBar = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10px auto 0 auto;
-    padding-bottom: 10px;
+    margin: 0 auto 0 auto;
+    min-height: 70px;
+    padding: 25px;
     box-sizing: border-box;
 
     position: fixed;
@@ -80,7 +121,7 @@ const BottonBar = styled.div`
     background-color: #FFFFFF;
 
     width: 375px;
-    height: 70px;
+    height: auto;
     font-family: 'Recursive', sans-serif;
     font-weight: 700;
 
@@ -91,4 +132,22 @@ const Order = styled.div`
     display: flex;
     margin-top: 5px;
 `
+const Finish = styled.div`
+    display: ${props => props.show};
+    flex-direction: column;
+    width: 270px;
+    height: 85px;
+    margin: auto;
+`
+const Title = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: auto;
+    width: 125px;
+`
 
+const Message = styled.p`
+    text-align: center;
+    margin-bottom: 15px;
+`

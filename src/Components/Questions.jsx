@@ -17,13 +17,13 @@ const StateAnswer = [
                     ];
 
 export default function Questions(props){
-    const {turn, setTurn, verify, setVerify, sequence, setSequence, respostas, setRespostas} = props;
+    const {turn, setTurn, verify, setVerify, sequence, setSequence, respostas, setRespostas, verifyFinish} = props;
 
     const [forgots, setForgots] = useState([]);
     const [almosts, setAlmosts] = useState([]);
     const [remembers, setRemembers] = useState([]);
 
-    // console.log(situation)
+    
     function TurnCard(index){
         const virados = [...turn];
         setTurn([...virados, index]);
@@ -57,7 +57,6 @@ export default function Questions(props){
             AddResponse(); 
         }
     }
-    console.log(forgots);
 
     function AddAlmost(str){
         const listA = [...almosts];
@@ -67,7 +66,6 @@ export default function Questions(props){
             AddResponse(); 
         }
     }
-    console.log(almosts);
 
     function AddRemember(str){
         const listR = [...remembers];
@@ -77,63 +75,71 @@ export default function Questions(props){
             AddResponse(); 
         }
     }
-    console.log(remembers);
 
     return(
         <Main>
             <Lista>
                 {Cards.map((card, index) => 
-                <Item   key={card.question} >
+                <Item   key={card.question} data-test="flashcard" >
                         {
                         turn.includes(card.question) ? 
                             verify.includes(card.answer) ? 
                                 forgots.includes(card.answer) ? (
                                     <ForgotAnswer>
-                                        {"Pergunta " + (index+1)}
-                                        <Icon src={StateAnswer[4]}/>
+                                        <p data-test="flashcard-text" >{"Pergunta " + (index+1)}</p>
+                                        <Icon src={StateAnswer[4]} data-test="no-icon"/>
                                     </ForgotAnswer>
                                 ): almosts.includes(card.answer) ? (
                                     <AlmostAnswer>
-                                        {"Pergunta " + (index+1)}
-                                        <Icon src={StateAnswer[3]}/>
+                                        <p data-test="flashcard-text" >{"Pergunta " + (index+1)}</p>
+                                        <Icon src={StateAnswer[3]} data-test="partial-icon"/>
                                     </AlmostAnswer>
                                 ) : remembers.includes(card.answer) ? (
                                     <RememberAnswer>
-                                        {"Pergunta " + (index+1)}
-                                        <Icon src={StateAnswer[2]}/>
+                                        <p data-test="flashcard-text" >{"Pergunta " + (index+1)}</p>
+                                        <Icon src={StateAnswer[2]} data-test="zap-icon"/>
                                     </RememberAnswer>
                                 ) :
                                 <Answer>
-                                    {card.answer} 
+                                    <p data-test="flashcard-text" >{card.answer} </p>
                                     <Buttons>
                                         <ForgotBtn onClick={() => {
                                             AddForgots(card.answer);
-                                            }} >Não Lembrei</ForgotBtn>
+                                            verifyFinish();
+                                            }} 
+                                            data-test="no-btn"
+                                            >Não Lembrei</ForgotBtn>
                                         <AlmostBtn onClick={() => {
                                             AddAlmost(card.answer);
-                                            }} >Quase não Lembrei</AlmostBtn>
+                                            verifyFinish();
+                                            }} 
+                                            data-test="partial-btn"
+                                            >Quase não Lembrei</AlmostBtn>
                                         <RememberBtn onClick={() => {
                                             AddRemember(card.answer);
-                                            }} >Zap!</RememberBtn>
+                                            verifyFinish();
+                                            }} 
+                                            data-test="zap-btn"
+                                            >Zap!</RememberBtn>
                                     </Buttons>
                                 </Answer>
                             : 
                             <QuestTurn>
-                            {card.question}
+                            <p data-test="flashcard-text" >{card.question}</p>
                             <Icon   src={StateAnswer[1]} 
                                     onClick={() => {
                                         ShowAnswer(card);
                                         TurnCard(card.question);
-                                    }} />
+                                    }} data-test="turn-btn"/>
                             </QuestTurn>
                         : 
                         <Quest>
-                            {"Pergunta " + (index+1)}
+                            <p data-test="flashcard-text" >{"Pergunta " + (index+1)}</p>
                             <Icon   src={StateAnswer[0]} 
                                     onClick={() => {
                                         ShowAnswer(card);
                                         TurnCard(card.question);
-                                    }} />
+                                    }} data-test="play-btn"/>
                         </Quest>
                                     
                     }
