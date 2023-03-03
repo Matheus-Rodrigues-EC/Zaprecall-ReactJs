@@ -27,6 +27,7 @@ const Section = styled.section`
     background-color: #FB6B6B;
     width: 375px;
     height: 667px;
+    margin: auto;
 `
 
 const Image = styled.img`
