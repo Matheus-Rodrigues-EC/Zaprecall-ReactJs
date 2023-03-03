@@ -27,8 +27,8 @@ export default function Screen(props){
             <BottonBar>
                 <h4>{respostas}/{Cards.length} Concluídos</h4>
                 <Order>
-                    {sequence.map((image) => 
-                        <Icon src={image} />
+                    {sequence.map((image, index) => 
+                        <Icon key={index} src={image} />
                     )}
                 </Order>
             </BottonBar>
@@ -50,7 +50,7 @@ const Header = styled.div`
     justify-content: space-around;
     align-items: center;
     margin: auto;
-    padding-top: 48px;
+    padding-top: 35px;
 `;
 
 const ImageLogo = styled.img`

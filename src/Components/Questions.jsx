@@ -87,24 +87,22 @@ export default function Questions(props){
                         {
                         turn.includes(card.question) ? 
                             verify.includes(card.answer) ? 
-                                forgots.includes(card.answer) ? 
-                                    almosts.includes(card.answer) ? 
-                                        remembers.includes(card.answer) ? 
-                                            <RememberAnswer>
-                                                {"Pergunta " + (index+1)}
-                                                <Icon src={StateAnswer[2]}/>
-                                            </RememberAnswer>
-                                        : 
-                                        <AlmostAnswer>
-                                            {"Pergunta " + (index+1)}
-                                            <Icon src={StateAnswer[3]}/>
-                                        </AlmostAnswer>
-                                    :
+                                forgots.includes(card.answer) ? (
                                     <ForgotAnswer>
                                         {"Pergunta " + (index+1)}
                                         <Icon src={StateAnswer[4]}/>
                                     </ForgotAnswer>
-                                :
+                                ): almosts.includes(card.answer) ? (
+                                    <AlmostAnswer>
+                                        {"Pergunta " + (index+1)}
+                                        <Icon src={StateAnswer[3]}/>
+                                    </AlmostAnswer>
+                                ) : remembers.includes(card.answer) ? (
+                                    <RememberAnswer>
+                                        {"Pergunta " + (index+1)}
+                                        <Icon src={StateAnswer[2]}/>
+                                    </RememberAnswer>
+                                ) :
                                 <Answer>
                                     {card.answer} 
                                     <Buttons>
@@ -202,6 +200,7 @@ const Answer = styled(Quest)`
 const Answered = styled(Quest)`
     background-color: #FFFFFF;
     text-decoration: line-through;
+    color: ${props => props.value }
 `
 const ForgotAnswer = styled(Answered)`
     color: #FF3030;
