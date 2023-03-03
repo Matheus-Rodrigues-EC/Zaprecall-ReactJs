@@ -15,7 +15,7 @@ export default function Welcome(){
         <Section>
             <Image src={Logo} alt=""/>
             <Title>ZapRecall</Title>
-            <Button onClick={() => {PlayRecall()}}>Iniciar Recall!</Button>
+            <Button onClick={() => {PlayRecall()}} data-test="start-btn" >Iniciar Recall!</Button>
         </Section>
     )
 }

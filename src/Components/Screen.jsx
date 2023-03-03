@@ -37,7 +37,7 @@ export default function Screen(props){
                         verifyFinish={verifyFinish}
                         />
             <BottonBar data-test="footer">
-                <Finish show={show}>
+                <Finish show={show} data-test="finish-text">
                     {sequence.includes(Wrong) ? (
                         <>
                         <Title>
