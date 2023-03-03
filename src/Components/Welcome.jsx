@@ -2,17 +2,18 @@
 import styled from "styled-components"
 import Logo from "./assets/logo.png";
 
-export default function Welcome(){
+export default function Welcome(props){
 
-    // const [visible, setVisible] = useState("flex");
+    const {showWelcome, setShowWelcome, setShowScreen} = props;
 
     function PlayRecall(){
         console.log("Iniciar!");
-        // setVisible("none");
+        setShowWelcome("none");
+        setShowScreen("block")
     }
 
     return(
-        <Section>
+        <Section showWelcome={showWelcome}>
             <Image src={Logo} alt=""/>
             <Title>ZapRecall</Title>
             <Button onClick={() => {PlayRecall()}} data-test="start-btn" >Iniciar Recall!</Button>
@@ -22,6 +23,7 @@ export default function Welcome(){
 
 
 const Section = styled.section`
+    display: ${props => props.showWelcome};
     background-color: #FB6B6B;
     width: 375px;
     height: 667px;

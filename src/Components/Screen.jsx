@@ -11,7 +11,7 @@ import Party from "./assets/party.png";
 import Sad from "./assets/sad.png";
 
 export default function Screen(props){
-    const {turn, setTurn, verify, setVerify, sequence, setSequence} = props
+    const {turn, setTurn, verify, setVerify, sequence, setSequence, showScreen} = props
     const [respostas, setRespostas] = useState(0);
     const [show, setShow] = useState('none');
 
@@ -21,7 +21,7 @@ export default function Screen(props){
     }
 
     return(
-        <Section>
+        <Section showScreen={showScreen} >
             <Header>
                 <ImageLogo src={Logo} alt=""/>
                 <TextLogo>ZapRecall</TextLogo>
@@ -77,6 +77,7 @@ export default function Screen(props){
 }
 
 const Section = styled.section`
+    display: ${props => props.showScreen};
     background-color: #FB6B6B;
     width: 375px;
     height: auto;
