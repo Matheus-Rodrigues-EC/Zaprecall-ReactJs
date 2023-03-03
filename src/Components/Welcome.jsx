@@ -26,7 +26,7 @@ const Section = styled.section`
     display: ${props => props.showWelcome};
     background-color: #FB6B6B;
     width: 375px;
-    height: 667px;
+    height: 100vh;
     margin: auto;
 `
 
